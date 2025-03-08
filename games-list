@@ -1,3 +1,4 @@
 return {
-    { name = "Build a Boat for Treasure", github = "https://raw.githubusercontent.com/thelonious-jaha/Project-Lono/main/games/BABFT.lua", placeId = 537413528 }
+    { name = "Build a Boat for Treasure", github = "https://raw.githubusercontent.com/thelonious-jaha/Project-Lono/main/games/BABFT.lua", placeId = 537413528 },
+    { name = "Legends of Speed", github = "https://raw.githubusercontent.com/thelonious-jaha/Project-Lono/main/games/LoS.lua", placeId = 3101667897 }
 }
