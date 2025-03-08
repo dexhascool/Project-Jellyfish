@@ -1,6 +1,6 @@
 local supportedGames = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Project-Lono/main/list"))()
 
-local Kane = loadstring(game:HttpGet("https://raw.githubusercontent.com/yourusername/yourrepository/main/source.lua"))()
+local Kane = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Kane-UI-Library/main/source.lua"))()
 local Window = Kane:MakeWindow({ Name = "Project Lono Loader" })
 getgenv().ProjectLonoWindow = Window  -- Store the window globally for use in other scripts
 local HomeTab = Window:MakeTab({ Name = "Home" })
