@@ -18,7 +18,7 @@ local orbConnection
 local hoopConnection
 local rebirthConnection
 
--// AutoFarm
+--// AutoFarm
 local orbToggle = AutoFarmTab:AddToggle({
     Name = "Enable Orb Autofarm",
     Default = getgenv().LegendsOfSpeed.EnableOrbAutofarm,
