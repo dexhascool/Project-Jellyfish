@@ -1,3 +1,3 @@
-supportedGames = {
+return {
     { name = "Build a Boat for Treasure", github = "https://raw.githubusercontent.com/thelonious-jaha/Project-Lono/main/games/Build%20a%20Boat%20for%20Treasure.lua", placeId = 537413528 }
 }
