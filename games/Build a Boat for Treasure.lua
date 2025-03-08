@@ -1,6 +1,6 @@
 --// Variables
 local UILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Kane-UI-Library/main/source.lua"))()
-local Window = getgenv().ProjectLonoWindow or UILib:MakeWindow({ Name = "Treasure AutoFarm" })
+local Window = getgenv().ProjectLonoWindow or UILib:MakeWindow({ Name = "Gold AutoFarm" })
 local SettingsTab = Window:MakeTab({ Name = "Treasure AutoFarm" })
 
 local Players = game:GetService("Players")
