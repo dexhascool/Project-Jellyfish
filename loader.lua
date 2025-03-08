@@ -1,4 +1,73 @@
---// Variables
+--// Loading Screen Set-up
+local LoadingScreen = Instance.new("ScreenGui")
+LoadingScreen.Name = "LoadingScreen"
+LoadingScreen.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+LoadingScreen.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = LoadingScreen
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+MainFrame.Size = UDim2.new(0, 250, 0, 125)
+MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+MainFrame.BorderSizePixel = 0
+
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Name = "TitleLabel"
+TitleLabel.Parent = MainFrame
+TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TitleLabel.BorderSizePixel = 0
+TitleLabel.Size = UDim2.new(1, 0, 0.3, 0)
+TitleLabel.Font = Enum.Font.SourceSans
+TitleLabel.Text = "Kū Loader"
+TitleLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+TitleLabel.TextSize = 20
+TitleLabel.TextYAlignment = Enum.TextYAlignment.Bottom
+
+local LoadBar = Instance.new("Frame")
+LoadBar.Name = "LoadBar"
+LoadBar.Parent = MainFrame
+LoadBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+LoadBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+LoadBar.Position = UDim2.new(0, 10, 1, -75)
+LoadBar.Size = UDim2.new(1, -20, 0.2, 0)
+
+local FillBar = Instance.new("Frame")
+FillBar.Name = "FillBar"
+FillBar.Parent = LoadBar
+FillBar.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+FillBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+FillBar.BorderSizePixel = 0
+FillBar.Size = UDim2.new(0, 0, 1, 0)  -- starts empty
+
+local LoadLabel = Instance.new("TextLabel")
+LoadLabel.Name = "LoadLabel"
+LoadLabel.Parent = MainFrame
+LoadLabel.AnchorPoint = Vector2.new(0.5, 0)
+LoadLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+LoadLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+LoadLabel.BorderSizePixel = 0
+LoadLabel.Position = UDim2.new(0.5, 0, 1, -45)
+LoadLabel.Size = UDim2.new(0, 150, 0, 20)
+LoadLabel.Font = Enum.Font.SourceSans
+LoadLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+LoadLabel.TextSize = 14
+
+local progress = 0
+while progress < 1 do
+	local increment = math.random() * 0.1  -- Random increment between 0 and 0.1
+	progress = math.clamp(progress + increment, 0, 1)
+	FillBar.Size = UDim2.new(progress, 0, 1, 0)
+	LoadLabel.Text = "Loading... " .. math.floor(progress * 100) .. "%"
+	wait(math.random(0.1, 0.5))  -- Random delay between steps
+end
+
+LoadingScreen:Destroy()
+
+--// Loader Set-up
 local successSupported, supportedGames = pcall(function()
 	return loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Project-Lono/main/games-list"))()
 end)
@@ -11,7 +80,7 @@ local successKane, Kane = pcall(function()
 	return loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Kane-UI-Library/main/source.lua"))()
 end)
 if not successKane then
-	error("Failed to load Kane UI Library.")
+	error("Failed to load Kane UI Library. Check your URL or internet connection.")
 end
 
 local Window = Kane:MakeWindow({ Name = "Project Lono" })
@@ -35,7 +104,7 @@ local function loadGameScript(gameInfo)
 		})
 		return
 	end
-    
+
 	local loadedScript, compileError = loadstring(response)
 	if not loadedScript then
 		warn("Failed to compile script for", gameInfo.name, compileError)
@@ -48,7 +117,7 @@ local function loadGameScript(gameInfo)
 		})
 		return
 	end
-    
+
 	local successRun, runError = pcall(loadedScript)
 	if not successRun then
 		warn("Error running script for", gameInfo.name, runError)
