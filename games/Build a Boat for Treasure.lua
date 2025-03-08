@@ -1,7 +1,7 @@
 --// Variables
 local UILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Kane-UI-Library/main/source.lua"))()
-local Window = UILib:MakeWindow({ Name = "Treasure AutoFarm" })
-local SettingsTab = Window:MakeTab({ Name = "Settings" })
+local Window = getgenv().ProjectLonoWindow or UILib:MakeWindow({ Name = "Treasure AutoFarm" })
+local SettingsTab = Window:MakeTab({ Name = "Treasure AutoFarm" })
 
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
@@ -58,7 +58,7 @@ local autoFarmToggle = SettingsTab:AddToggle({
     end
 })
 
---// Autofarm Script
+--// AutoFarm
 local function autoFarm(currentRun)
     local Character = LocalPlayer.Character
     local NormalStages = Workspace.BoatStages.NormalStages
