@@ -9,7 +9,7 @@ local Lighting = game:GetService("Lighting")
 local LocalPlayer = Players.LocalPlayer
 
 getgenv().TreasureAutoFarm = {
-    Enabled = true,        -- Toggle the auto farm on/off
+    Enabled = false,        -- Toggle the auto farm on/off
     Teleport = 3.40,       -- Delay between each teleport in a run (TP Cooldown)
     TimeBetweenRuns = 6    -- Cooldown between runs (Run Cooldown)
 }
@@ -51,7 +51,7 @@ local runCooldownSlider = SettingsTab:AddSlider({
 
 local autoFarmToggle = SettingsTab:AddToggle({
     Name = "Enable AutoFarm",
-    Default = false,
+    Default = getgenv().TreasureAutoFarm.Enabled,
     Callback = function(state)
         getgenv().TreasureAutoFarm.Enabled = state
         print("AutoFarm Enabled:", state)
