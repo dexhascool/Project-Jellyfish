@@ -1,4 +1,4 @@
-local supportedGames = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Project-Lono/main/list"))()
+local supportedGames = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Project-Lono/main/games-list"))()
 
 local Kane = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Kane-UI-Library/main/source.lua"))()
 local Window = Kane:MakeWindow({ Name = "Project Lono Loader" })
