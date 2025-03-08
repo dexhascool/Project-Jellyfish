@@ -58,11 +58,11 @@ LoadLabel.TextSize = 14
 
 local progress = 0
 while progress < 1 do
-	local increment = math.random() * 0.1  -- Random increment between 0 and 0.1
+	local increment = math.random() * 0.05
 	progress = math.clamp(progress + increment, 0, 1)
 	FillBar.Size = UDim2.new(progress, 0, 1, 0)
 	LoadLabel.Text = "Loading... " .. math.floor(progress * 100) .. "%"
-	wait(math.random(0.1, 0.5))  -- Random delay between steps
+	wait(math.random(0.3, 0.8))
 end
 
 LoadingScreen:Destroy()
