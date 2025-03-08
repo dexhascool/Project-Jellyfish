@@ -51,7 +51,7 @@ local runCooldownSlider = SettingsTab:AddSlider({
 
 local autoFarmToggle = SettingsTab:AddToggle({
     Name = "Enable AutoFarm",
-    Default = getgenv().TreasureAutoFarm.Enabled,
+    Default = false,
     Callback = function(state)
         getgenv().TreasureAutoFarm.Enabled = state
         print("AutoFarm Enabled:", state)
