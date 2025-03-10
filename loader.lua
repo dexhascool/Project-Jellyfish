@@ -69,7 +69,7 @@ LoadingScreen:Destroy()
 
 --// Loader Set-up
 local successSupported, supportedGames = pcall(function()
-	return loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Project-Lono/main/games-list"))()
+	return loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Project-Lono/main/supported.lua"))()
 end)
 if not successSupported then
 	supportedGames = {}
