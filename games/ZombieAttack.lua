@@ -1,18 +1,18 @@
---// Variables
+--// Services
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LocalPlayer = Players.LocalPlayer
 
-local Kane = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Kane-UI-Library/main/source.lua"))()
+local UILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Kane-UI-Library/main/source.lua"))()
 local Window = getgenv().ProjectLonoWindow or UILib:MakeWindow({ Name = "Project Lono" })
 local ZombieTab = Window:MakeTab({ Name = "Zombie AutoFarm" })
+local ModsTab = Window:MakeTab({ Name = "Mods" })
 
 getgenv().ZombieAttack = {
     EnableAutoFarm = false,
 }
 
---// UI Elements
 local autoFarmToggle = ZombieTab:AddToggle({
     Name = "Enable Zombie AutoFarm",
     Default = getgenv().ZombieAttack.EnableAutoFarm,
@@ -21,8 +21,7 @@ local autoFarmToggle = ZombieTab:AddToggle({
         print("Zombie AutoFarm Enabled:", state)
     end,
 })
-
---// Functions
+ --// Functions
 local function getNearestZombie()
     local nearestZombie = nil
     local shortestDistance = math.huge
@@ -30,7 +29,6 @@ local function getNearestZombie()
     if not playerChar or not playerChar:FindFirstChild("Head") then
         return nil
     end
-
     local playerHead = playerChar.Head
 
     local function checkFolder(folder)
@@ -48,7 +46,6 @@ local function getNearestZombie()
     if workspace:FindFirstChild("BossFolder") then
         checkFolder(workspace.BossFolder)
     end
-
     if workspace:FindFirstChild("enemies") then
         checkFolder(workspace.enemies)
     end
@@ -58,7 +55,7 @@ end
 
 local groundOffset = 8
 
---// Main AutoFarm
+--// Main AutoFarm Loop
 spawn(function()
     while true do
         task.wait(0.1)
@@ -66,9 +63,7 @@ spawn(function()
         and LocalPlayer.Character 
         and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             local target = getNearestZombie()
-            if target 
-            and target:FindFirstChild("Head") 
-            and target:FindFirstChild("HumanoidRootPart") then
+            if target and target:FindFirstChild("Head") and target:FindFirstChild("HumanoidRootPart") then
                 local cam = workspace.CurrentCamera
                 cam.CFrame = CFrame.new(cam.CFrame.Position, target.Head.Position)
                 LocalPlayer.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * CFrame.new(0, groundOffset, 9)
@@ -95,13 +90,28 @@ spawn(function()
         if getgenv().ZombieAttack.EnableAutoFarm 
         and LocalPlayer.Character 
         and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-
             LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
-            local torso = LocalPlayer.Character:FindFirstChild("Torso") 
-                        or LocalPlayer.Character:FindFirstChild("UpperTorso")
+            local torso = LocalPlayer.Character:FindFirstChild("Torso") or LocalPlayer.Character:FindFirstChild("UpperTorso")
             if torso then
                 torso.Velocity = Vector3.new(0, 0, 0)
             end
         end
     end
 end)
+ --// Equip All Guns Button
+local equipGunsButton = ModsTab:AddButton({
+    Name = "Equip All Guns",
+    Callback = function()
+        for _, tool in ipairs(ReplicatedStorage.Guns:GetChildren()) do
+            if tool:IsA("Tool") then
+                tool.Parent = LocalPlayer.Backpack
+            end
+        end
+        UILib:MakeNotification({
+            Title = "Equipped!",
+            Text = "All guns have been moved to your backpack.",
+            Icon = "rbxassetid://1234567890",
+            Duration = 3,
+        })
+    end,
+})
