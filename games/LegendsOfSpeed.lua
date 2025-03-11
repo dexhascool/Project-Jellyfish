@@ -4,14 +4,18 @@ local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
-local UILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Kane-UI-Library/main/source.lua"))()
-local Window = getgenv().ProjectLonoWindow or UILib:MakeWindow({ Name = "Project Lono" })
+local UILib = getgenv().ProjectLonoWindow or loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Kane-UI-Library/main/source.lua"))()
+local Window = UILib:MakeWindow({ Name = "Project Lono" })
 local AutoFarmTab = Window:MakeTab({ Name = "AutoFarm" })
+local ModsTab = Window:MakeTab({ Name = "Mods" })
+local RacesTab = Window:MakeTab({ Name = "Races" })
 
 getgenv().LegendsOfSpeed = {
     EnableOrbAutofarm = false,
     EnableHoopAutofarm = false,
     EnableAutoRebirth = false,
+    AutoJoinRace = false,
+    AutoFinishRace = false,
 }
 
 local orbConnection
@@ -40,7 +44,7 @@ local orbToggle = AutoFarmTab:AddToggle({
                 orbConnection = nil
             end
         end
-    end
+    end,
 })
 
 local hoopToggle = AutoFarmTab:AddToggle({
@@ -54,7 +58,7 @@ local hoopToggle = AutoFarmTab:AddToggle({
                 if getgenv().LegendsOfSpeed.EnableHoopAutofarm 
                 and LocalPlayer.Character 
                 and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                    for _, hoop in ipairs(game.Workspace.Hoops:GetChildren()) do
+                    for _, hoop in ipairs(workspace.Hoops:GetChildren()) do
                         if hoop:IsA("BasePart") then
                             firetouchinterest(hoop, LocalPlayer.Character.HumanoidRootPart, 0)
                             firetouchinterest(hoop, LocalPlayer.Character.HumanoidRootPart, 1)
@@ -68,7 +72,7 @@ local hoopToggle = AutoFarmTab:AddToggle({
                 hoopConnection = nil
             end
         end
-    end
+    end,
 })
 
 local rebirthToggle = AutoFarmTab:AddToggle({
@@ -98,5 +102,45 @@ local rebirthToggle = AutoFarmTab:AddToggle({
                 rebirthConnection = nil
             end
         end
-    end
+    end,
 })
+
+local autoJoinRaceToggle = RacesTab:AddToggle({
+    Name = "Auto Join Race",
+    Default = false,
+    Callback = function(state)
+        getgenv().LegendsOfSpeed.AutoJoinRace = state
+        print("Auto Join Race Enabled:", state)
+    end,
+})
+
+local autoFinishRaceToggle = RacesTab:AddToggle({
+    Name = "Auto Finish Race",
+    Default = false,
+    Callback = function(state)
+        getgenv().LegendsOfSpeed.AutoFinishRace = state
+        print("Auto Finish Race Enabled:", state)
+    end,
+})
+
+ReplicatedStorage.raceInProgress.Changed:Connect(function()
+    if getgenv().LegendsOfSpeed.AutoJoinRace and ReplicatedStorage.raceInProgress.Value then
+        ReplicatedStorage.rEvents.raceEvent:FireServer("joinRace")
+    end
+end)
+
+ReplicatedStorage.raceStarted.Changed:Connect(function()
+    if getgenv().LegendsOfSpeed.AutoFinishRace and ReplicatedStorage.raceStarted.Value then
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            for _, map in ipairs(workspace.raceMaps:GetChildren()) do
+                if map:FindFirstChild("finishPart") then
+                    local hrp = LocalPlayer.Character.HumanoidRootPart
+                    local oldFinishPos = map.finishPart.CFrame
+                    map.finishPart.CFrame = hrp.CFrame
+                    task.wait()
+                    map.finishPart.CFrame = oldFinishPos
+                end
+            end
+        end
+    end
+end)
