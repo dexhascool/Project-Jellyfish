@@ -5,7 +5,7 @@ local Debris = game:GetService("Debris")
 local LocalPlayer = Players.LocalPlayer
 
 local UILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Kane-UI-Library/main/source.lua"))()
-local Window = UILib:MakeWindow({ Name = "Project Lono" })
+local Window = getgenv().ProjectLonoWindow or UILib:MakeWindow({ Name = "Project Lono" })
 local AutoFarmTab = Window:MakeTab({ Name = "AutoFarm" })
 local ModsTab = Window:MakeTab({ Name = "Mods" })
 
