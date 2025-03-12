@@ -166,7 +166,6 @@ end
 local HumanoidTab = Window:MakeTab({ Name = "Humanoid" })
 local MiscTab = Window:MakeTab({ Name = "Misc" })
 
-
 local superhumanToggle = HumanoidTab:AddToggle({
     Name = "Superhuman",
     Default = false,
