@@ -68,6 +68,8 @@ end
 LoadingScreen:Destroy()
 
 --// Loader Set-up
+getgenv().ProjectLono = getgenv().ProjectLono or {}
+
 local successSupported, supportedGames = pcall(function()
 	return loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Project-Lono/main/supported.lua"))()
 end)
@@ -159,3 +161,136 @@ if not gameFound then
 		TextSize = 14
 	})
 end
+
+--// Other Tabs
+local HumanoidTab = Window:MakeTab({ Name = "Humanoid" })
+local MiscTab = Window:MakeTab({ Name = "Misc" })
+
+
+local superhumanToggle = HumanoidTab:AddToggle({
+    Name = "Superhuman",
+    Default = false,
+    Callback = function(state)
+        getgenv().ProjectLono.Superhuman = state
+        print("Superhuman Enabled:", state)
+        if not state then
+            local character = game.Players.LocalPlayer.Character
+            if character then
+                local humanoid = character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.WalkSpeed = 16
+                    humanoid.JumpPower = 50
+                end
+            end
+        end
+    end,
+})
+
+HumanoidTab:AddSlider({
+    Name = "WalkSpeed",
+    Min = 0,
+    Max = 100,
+    Default = 16,
+    Increment = 1,
+    ValueName = " WS",
+    Callback = function(value)
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                if getgenv().ProjectLono.Superhuman then
+                    humanoid.WalkSpeed = value
+                else
+                    humanoid.WalkSpeed = 16
+                end
+            end
+        end
+    end,
+})
+
+HumanoidTab:AddSlider({
+    Name = "Jump Power",
+    Min = 0,
+    Max = 200,
+    Default = 50,
+    Increment = 1,
+    ValueName = " JP",
+    Callback = function(value)
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                if getgenv().ProjectLono.Superhuman then
+                    humanoid.JumpPower = value
+                else
+                    humanoid.JumpPower = 50
+                end
+            end
+        end
+    end,
+})
+
+local function enableAntiAFK()
+    local GC = getconnections or get_signal_cons
+    if GC then
+        for _, conn in pairs(GC(LocalPlayer.Idled)) do
+            if conn.Disable then
+                conn:Disable()
+            elseif conn.Disconnect then
+                conn:Disconnect()
+            end
+        end
+    else
+        local VirtualUser = game:GetService("VirtualUser")
+        LocalPlayer.Idled:Connect(function()
+            VirtualUser:CaptureController()
+            VirtualUser:ClickButton2(Vector2.new())
+        end)
+    end
+end
+
+MiscTab:AddToggle({
+    Name = "Anti-AFK",
+    Default = false,
+    Callback = function(state)
+        if state then
+            enableAntiAFK()
+            print("Anti-AFK Enabled")
+        else
+            print("Anti-AFK Disabled")
+            --[[
+                Note: Re-enabling idling connections isn't as straightforward as flipping a switch back on.
+                Eventually I might make it manually recreate the connections that detect idleness, but right now, disabling the Anti-AFK toggle doesn't do anything.
+            ]]
+        end
+    end,
+})
+
+local antiFlingConnection = nil
+MiscTab:AddToggle({
+    Name = "Anti-Fling",
+    Default = false,
+    Callback = function(state)
+        if state then
+            if antiFlingConnection then antiFlingConnection:Disconnect() end
+            antiFlingConnection = RunService.Stepped:Connect(function()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= LocalPlayer and player.Character then
+                        for _, part in pairs(player.Character:GetDescendants()) do
+                            if part:IsA("BasePart") then
+                                part.CanCollide = false
+                            end
+                        end
+                    end
+                end
+            end)
+            print("Anti-Fling Enabled")
+        else
+            if antiFlingConnection then
+                antiFlingConnection:Disconnect()
+                antiFlingConnection = nil
+            end
+            print("Anti-Fling Disabled")
+        end
+    end,
+})
