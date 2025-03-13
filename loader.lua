@@ -67,6 +67,12 @@ end
 
 LoadingScreen:Destroy()
 
+--// Variables
+local VirtualUser = game:GetService("VirtualUser")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
 --// Loader Set-up
 getgenv().ProjectLono = getgenv().ProjectLono or {}
 
@@ -166,6 +172,7 @@ end
 local HumanoidTab = Window:MakeTab({ Name = "Humanoid" })
 local MiscTab = Window:MakeTab({ Name = "Misc" })
 
+
 local superhumanToggle = HumanoidTab:AddToggle({
     Name = "Superhuman",
     Default = false,
@@ -240,7 +247,6 @@ local function enableAntiAFK()
             end
         end
     else
-        local VirtualUser = game:GetService("VirtualUser")
         LocalPlayer.Idled:Connect(function()
             VirtualUser:CaptureController()
             VirtualUser:ClickButton2(Vector2.new())
