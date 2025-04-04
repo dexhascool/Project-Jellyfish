@@ -2,7 +2,7 @@ getgenv().ProjectJellyfish = getgenv().ProjectJellyfish or {}
 
 local supportedGames = loadstring(game:HttpGet("https://raw.githubusercontent.com/dexhascool/Project-Jellyfish/main/supported.lua"))()
 local Squid = loadstring(game:HttpGet("https://raw.githubusercontent.com/dexhascool/Squid-UI-Library/main/source.lua"))()
-getgenv().ProjectJellyfishWindow = Kane:MakeWindow({ Name = "Project Jellyfish" })
+getgenv().ProjectJellyfishWindow = Squid:MakeWindow({ Name = "Project Jellyfish" })
 local homeTab = getgenv().ProjectJellyfishWindow:MakeTab({ Name = "Home" })
 
 local function loadGameScript(gameInfo)
