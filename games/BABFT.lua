@@ -1,7 +1,8 @@
 --// Variables
-local UILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/thelonious-jaha/Kane-UI-Library/main/source.lua"))()
-local Window = getgenv().ProjectLonoWindow or UILib:MakeWindow({ Name = "Gold AutoFarm" })
-local SettingsTab = Window:MakeTab({ Name = "Gold AutoFarm" })
+local UILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/dexhascool/Squid-UI-Library/main/source.lua"))()
+local Window = getgenv().ProjectJellyfishWindow or UILib:MakeWindow({ Name = "Project Jellyfish" })
+getgenv().ProjectJellyfishWindow = Window
+local SettingsTab = Window:MakeTab({ Name = "Treasure AutoFarm" })
 
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
@@ -10,12 +11,12 @@ local LocalPlayer = Players.LocalPlayer
 
 getgenv().TreasureAutoFarm = {
     Enabled = false,        -- Toggle the auto farm on/off
-    Teleport = 3.40,       -- Delay between each teleport in a run (TP Cooldown)
-    TimeBetweenRuns = 6    -- Cooldown between runs (Run Cooldown)
+    Teleport = 3.40,        -- Delay between each teleport in a run (TP Cooldown)
+    TimeBetweenRuns = 6     -- Cooldown between runs (Run Cooldown)
 }
 
 --// UI Elements
-local noteLabel = SettingsTab:AddLabel({
+SettingsTab:AddLabel({
     Name = "Note",
     Text = "Note: Disabling the auto farm will wait until the current run is finished.",
     Size = UDim2.new(1, 0, 0, 25),
@@ -23,7 +24,9 @@ local noteLabel = SettingsTab:AddLabel({
     TextSize = 14
 })
 
-local tpCooldownSlider = SettingsTab:AddSlider({
+local section = SettingsTab:MakeSection({Name = "Gold AutoFarm"})
+
+section:AddSlider({
     Name = "TP Cooldown",
     Min = 0.5,
     Max = 10,
@@ -36,7 +39,7 @@ local tpCooldownSlider = SettingsTab:AddSlider({
     end
 })
 
-local runCooldownSlider = SettingsTab:AddSlider({
+section:AddSlider({
     Name = "Run Cooldown",
     Min = 1,
     Max = 10,
@@ -49,7 +52,7 @@ local runCooldownSlider = SettingsTab:AddSlider({
     end
 })
 
-local autoFarmToggle = SettingsTab:AddToggle({
+section:AddToggle({
     Name = "Enable AutoFarm",
     Default = getgenv().TreasureAutoFarm.Enabled,
     Callback = function(state)
@@ -78,13 +81,12 @@ local function autoFarm(currentRun)
     end
 
     print("Teleporting to the end")
-    repeat wait()
+    repeat wait() 
         Character.HumanoidRootPart.CFrame = NormalStages.TheEnd.GoldenChest.Trigger.CFrame
     until Lighting.ClockTime ~= 35
 
     local Respawned = false
-    local Connection
-    Connection = LocalPlayer.CharacterAdded:Connect(function()
+    local Connection = LocalPlayer.CharacterAdded:Connect(function()
         Respawned = true
         Connection:Disconnect()
     end)
