@@ -2,7 +2,7 @@
 local UILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/dexhascool/Squid-UI-Library/main/source.lua"))()
 local Window = getgenv().ProjectJellyfishWindow or UILib:MakeWindow({ Name = "Project Jellyfish" })
 getgenv().ProjectJellyfishWindow = Window
-local SettingsTab = Window:MakeTab({ Name = "Treasure AutoFarm" })
+local SettingsTab = Window:MakeTab({ Name = "AutoFarm" })
 
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
